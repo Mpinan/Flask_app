@@ -16,6 +16,7 @@ def index():
 
 @app.route('/movies', methods=['GET'])
 def get_all_movies():
-    movies = Films.get_all_films()
-
-    return jsonify([*map(films_serializer, movies)])
+    all_movies = Films.get_all_films()
+    return jsonify(
+        movies = [movie.films_serializer for movie in all_movies]
+        )

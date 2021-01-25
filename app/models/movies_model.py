@@ -1,7 +1,5 @@
 from app import db
 
-db = SQLAlchemy(app)
-
 class Films(db.Model):
 
     __tablename__ = 'films'

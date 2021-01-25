@@ -1,8 +1,10 @@
 from flask import Flask
+from app.config import Config
 from flask_cors import CORS
-from dotenv import load_dotenv
-# ORM
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+from flask_migrate import Migrate
+# ORM
 
 # Psql adapter
 import psycopg2
@@ -10,20 +12,18 @@ import psycopg2
 # irrespective of it being a Windows Platform, Macintosh or Linux.
 import os
 
-from app import models
-
-
 app = Flask(__name__)
-
-load_dotenv()
-DATABASE = os.getenv('DATABASE')
-DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
-
-
 CORS(app)
+app.config.from_object(Config)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%s:%s@localhost/%s' % ( DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE )
+
+from app import models, routes
+
+
+
+
 
 
 
@@ -31,4 +31,3 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%s:%s@localhost/%s' % ( DA
 # PostgreSQL Database credentials loaded from the .env file
 
 
-db = SQLAlchemy(app)
