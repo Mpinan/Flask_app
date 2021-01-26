@@ -23,11 +23,3 @@ from app import models, routes
 
 
 
-
-
-
-
-
-# PostgreSQL Database credentials loaded from the .env file
-
-

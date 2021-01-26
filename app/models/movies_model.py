@@ -1,4 +1,5 @@
 from app import db
+from sqlalchemy.exc import IntegrityError
 
 class Films(db.Model):
 
@@ -12,10 +13,11 @@ class Films(db.Model):
     director = db.Column(db.String(128))
     genre = db.Column(db.String(128))
     rating = db.Column(db.String(128))
-    film_runtime = db.Column(db.DateTime)
-    meta_score = db.Column(db.DateTime)
+    film_runtime = db.Column(db.Integer)
+    meta_score = db.Column(db.Integer)
 
-    def __init__(self, film_name, img_url, release_year, summary, director, genre, rating, film_runtime, meta_score):
+    def __init__(self, film_id, film_name, img_url, release_year, summary, director, genre, rating, film_runtime, meta_score):
+        self.film_id = film_id,
         self.film_name = film_name
         self.img_url = img_url
         self.release_year = release_year
@@ -27,8 +29,14 @@ class Films(db.Model):
         self.meta_score = meta_score
 
     def save(self):
+        print(self, "hello in model")
         db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.commit()
+            return True, self.film_id
+        except IntegrityError:
+            return False, None
+        # db.session.commit()
 
     def update(self, data):
       for key, item in data.items():
