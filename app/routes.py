@@ -1,7 +1,7 @@
 from flask import Flask
-from flask import jsonify, request
+from flask import jsonify, request, json
 
-from app.models.movies_model import Films
+from app.models.movies_model import Film
 from app import app
 
 import os
@@ -16,7 +16,7 @@ def index():
 
 @app.route('/movies', methods=['GET'])
 def get_all_movies():
-    all_movies = Films.get_all_films()
+    all_movies = Film.get_all_films()
     return jsonify(
         movies = [movie.films_serializer for movie in all_movies]
         )
@@ -26,7 +26,7 @@ def submit_film():
     incoming = request.get_json()
 
     print(incoming, "hello incoming")
-    success, id = Films.save(Films(
+    success, id = Film.save(Film (
         incoming["film_name"],
         incoming["img_url"],
         incoming["release_year"],
@@ -39,33 +39,30 @@ def submit_film():
         ))
 
     if not success:
-        return jsonify(message="Error submitting task", id=None), 409
+        return jsonify(message="Error submitting film", id=None), 409
 
     return jsonify(success=True, id=id)
 
-# @app.route("/api/delete_task", methods=["POST"])
+@app.route("/delete_film/<int:film_id>", methods=["DELETE", "POST"])
+def delete_film(film_id):
+    success = Film.delete(film_id)
+    if not success:
+        return jsonify(message="Error deleting film"), 409
+
+    return jsonify(success=True)
+
+
+# @app.route("/api/edit_film", methods=["POST"])
 # @requires_auth
-# def delete_task():
-#     incoming = request.get_json()
-
-#     success = Task.delete_task(incoming.get('task_id'))
-#     if not success:
-#         return jsonify(message="Error deleting task"), 409
-
-#     return jsonify(success=True)
-
-
-# @app.route("/api/edit_task", methods=["POST"])
-# @requires_auth
-# def edit_task():
+# def edit_film():
 #     incoming = request.get_json()
    
-#     success = Task.edit_task(
-#         incoming.get('task_id'),
-#         incoming.get('task'),
+#     success = film.edit_film(
+#         incoming.get('film_id'),
+#         incoming.get('film'),
 #         incoming.get('status')
 #     )
 #     if not success:
-#         return jsonify(message="Error editing task"), 409
+#         return jsonify(message="Error editing film"), 409
 
 #     return jsonify(success=True)

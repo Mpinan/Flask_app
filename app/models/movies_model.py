@@ -1,11 +1,11 @@
 from app import db
 from sqlalchemy.exc import IntegrityError
 
-class Films(db.Model):
+class Film(db.Model):
 
     __tablename__ = 'films'
 
-    film_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     film_name = db.Column(db.String(128), nullable=False)
     img_url = db.Column(db.Text, nullable=False)
     release_year = db.Column(db.Integer)
@@ -16,8 +16,9 @@ class Films(db.Model):
     film_runtime = db.Column(db.Integer)
     meta_score = db.Column(db.Integer)
 
-    def __init__(self, film_id, film_name, img_url, release_year, summary, director, genre, rating, film_runtime, meta_score):
-        self.film_id = film_id,
+    def __init__(self, film_name, img_url, release_year, summary, director, genre, rating, film_runtime, meta_score):
+
+        # self.id = id,
         self.film_name = film_name
         self.img_url = img_url
         self.release_year = release_year
@@ -29,14 +30,13 @@ class Films(db.Model):
         self.meta_score = meta_score
 
     def save(self):
-        print(self, "hello in model")
+        print(self, "hello in model add")
         db.session.add(self)
         try:
             db.session.commit()
-            return True, self.film_id
+            return True, self.id
         except IntegrityError:
             return False, None
-        # db.session.commit()
 
     def update(self, data):
       for key, item in data.items():
@@ -44,26 +44,32 @@ class Films(db.Model):
       self.modified_at = datetime.datetime.utcnow()
       db.session.commit()
 
-    def delete(self):
-      db.session.delete(self)
-      de.session.commit()
+    def delete(film_id):
+        print(film_id, "hello in model delete")
+        film_to_delete = Film.query.filter_by(id=film_id).first()
+        db.session.delete(film_to_delete)
+        try:
+            db.session.commit()
+            return True
+        except IntegrityError:
+            return False
     
     @staticmethod
     def get_all_films():
-      return Films.query.all()
+      return Film.query.all()
     
     @staticmethod
     def get_one_film(id):
       return BlogpostModel.query.get(id)
 
     def __repr__(self):
-      return '<film_id {}>'.format(self.film_id)
+      return '<id {}>'.format(self.id)
 
 
     @property
     def films_serializer(film):
       return {
-        'film_id': film.film_id,
+        'id': film.id,
         'film_name': film.film_name,
         'img_url': film.img_url,
         'release_year': film.release_year,
