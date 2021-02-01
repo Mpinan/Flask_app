@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from flask_migrate import Migrate
+from app import models, routes
 # ORM
 
 # Psql adapter
@@ -12,14 +13,15 @@ import psycopg2
 # irrespective of it being a Windows Platform, Macintosh or Linux.
 import os
 
-app = Flask(__name__)
-CORS(app)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+def create_app(config_file = Config):
+ 
+    app = Flask(__name__)
+    CORS(app)
+    app.config.from_object(config_file)
+    db = SQLAlchemy(app)
+    migrate = Migrate(app, db)
 
 
-from app import models, routes
 
 
 
