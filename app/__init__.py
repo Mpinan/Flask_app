@@ -13,13 +13,11 @@ import psycopg2
 # irrespective of it being a Windows Platform, Macintosh or Linux.
 import os
 
-def create_app(config_file = Config):
- 
-    app = Flask(__name__)
-    CORS(app)
-    app.config.from_object(config_file)
-    db = SQLAlchemy(app)
-    migrate = Migrate(app, db)
+app = Flask(__name__)
+CORS(app)
+app.config.from_object(config_file)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 
