@@ -18,7 +18,6 @@ class Film(db.Model):
 
     def __init__(self, film_name, img_url, release_year, summary, director, genre, rating, film_runtime, meta_score):
 
-        # self.id = id,
         self.film_name = film_name
         self.img_url = img_url
         self.release_year = release_year
@@ -38,12 +37,6 @@ class Film(db.Model):
         except IntegrityError:
             return False, None
 
-    def update(self, data):
-      for key, item in data.items():
-        setattr(self, key, item)
-      self.modified_at = datetime.datetime.utcnow()
-      db.session.commit()
-
     def delete(film_id):
         print(film_id, "hello in model delete")
         film_to_delete = Film.query.filter_by(id=film_id).first()
@@ -53,6 +46,31 @@ class Film(db.Model):
             return True
         except IntegrityError:
             return False
+
+            
+    def update(film_id, self):
+        film_to_update = Film.query.filter_by(id=film_id).first()
+        # print(film_to_update.film_name, "heeeeeeeeeeeeeeeeere")
+        if not film_to_update:
+          return
+        else:
+          film_to_update.film_name = self.film_name
+          film_to_update.img_url = self.img_url
+          film_to_update.release_year = self.release_year
+          film_to_update.summary = self.summary
+          film_to_update.director = self.director
+          film_to_update.genre = self.genre
+          film_to_update.rating = self.rating
+          film_to_update.film_runtime = self.film_runtime
+          film_to_update.meta_score = self.meta_score
+          try:
+              db.session.commit()
+              return True, self.id
+          except IntegrityError:
+              print("i am an error")
+              return False, None
+              db.session.commit()
+
     
     @staticmethod
     def get_all_films():

@@ -49,20 +49,28 @@ def delete_film(film_id):
     if not success:
         return jsonify(message="Error deleting film"), 409
 
-    return jsonify(success=True)
+    return jsonify(success="Movie deleted!")
 
 
-# @app.route("/api/edit_film", methods=["POST"])
-# @requires_auth
-# def edit_film():
-#     incoming = request.get_json()
-   
-#     success = film.edit_film(
-#         incoming.get('film_id'),
-#         incoming.get('film'),
-#         incoming.get('status')
-#     )
-#     if not success:
-#         return jsonify(message="Error editing film"), 409
+@app.route("/edit_film/<int:film_id>", methods=["POST", "PUT"])
+def edit_film(film_id):
+    incoming = request.get_json()
 
-#     return jsonify(success=True)
+    print(film_id, incoming, "hello incoming")
+
+    success = Film.update(film_id, Film(
+        incoming["film_name"],
+        incoming["img_url"],
+        incoming["release_year"],
+        incoming["summary"],
+        incoming["director"],
+        incoming["genre"],
+        incoming["rating"],
+        incoming["film_runtime"],
+        incoming["meta_score"]
+        ))
+
+    if not success:
+        return jsonify(message="Error editing film, could not find the movie"), 409
+
+    return jsonify(message="Movie updated!")
