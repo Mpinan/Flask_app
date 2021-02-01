@@ -1,1 +1,1 @@
-web: gunicorn app:movies_api
+web: gunicorn app:app/__init__
