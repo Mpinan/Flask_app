@@ -4,7 +4,6 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from flask_migrate import Migrate
-from app import models, routes
 # ORM
 
 # Psql adapter
@@ -15,11 +14,12 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-app.config.from_object(config_file)
+app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
+from app import models, routes
 
 
 
