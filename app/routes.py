@@ -30,7 +30,6 @@ def get_film(film_id):
 def submit_film():
     incoming = request.get_json()
 
-    print(incoming, "hello incoming")
     success, id = Film.save(Film (
         incoming["film_name"],
         incoming["img_url"],
