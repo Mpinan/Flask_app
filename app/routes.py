@@ -21,6 +21,11 @@ def get_all_movies():
         movies = [movie.films_serializer for movie in all_movies]
         )
 
+@app.route('/movies/<int:film_id>', methods=['GET'])
+def get_film(film_id):
+    movie = Film.get_one_film(film_id)
+    return jsonify(movie.films_serializer)
+
 @app.route("/submit_film", methods=["POST"])
 def submit_film():
     incoming = request.get_json()
@@ -55,8 +60,6 @@ def delete_film(film_id):
 @app.route("/edit_film/<int:film_id>", methods=["POST", "PUT"])
 def edit_film(film_id):
     incoming = request.get_json()
-
-    print(film_id, incoming, "hello incoming")
 
     success = Film.update(film_id, Film(
         incoming["film_name"],

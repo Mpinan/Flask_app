@@ -29,7 +29,6 @@ class Film(db.Model):
         self.meta_score = meta_score
 
     def save(self):
-        print(self, "hello in model add")
         db.session.add(self)
         try:
             db.session.commit()
@@ -38,7 +37,6 @@ class Film(db.Model):
             return False, None
 
     def delete(film_id):
-        print(film_id, "hello in model delete")
         film_to_delete = Film.query.filter_by(id=film_id).first()
         db.session.delete(film_to_delete)
         try:
@@ -50,7 +48,6 @@ class Film(db.Model):
             
     def update(film_id, self):
         film_to_update = Film.query.filter_by(id=film_id).first()
-        # print(film_to_update.film_name, "heeeeeeeeeeeeeeeeere")
         if not film_to_update:
           return
         else:
@@ -78,7 +75,7 @@ class Film(db.Model):
     
     @staticmethod
     def get_one_film(id):
-      return BlogpostModel.query.get(id)
+      return Film.query.get(id)
 
     def __repr__(self):
       return '<id {}>'.format(self.id)
