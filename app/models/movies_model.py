@@ -14,9 +14,8 @@ class Film(db.Model):
     genre = db.Column(db.String(128))
     rating = db.Column(db.String(128))
     film_runtime = db.Column(db.Integer)
-    meta_score = db.Column(db.Integer)
 
-    def __init__(self, film_name, img_url, release_year, summary, director, genre, rating, film_runtime, meta_score):
+    def __init__(self, film_name, img_url, release_year, summary, director, genre, film_runtime):
 
         self.film_name = film_name
         self.img_url = img_url
@@ -24,9 +23,7 @@ class Film(db.Model):
         self.summary = summary
         self.director = director
         self.genre = genre
-        self.rating = rating
         self.film_runtime = film_runtime
-        self.meta_score = meta_score
 
     def save(self):
         db.session.add(self)
@@ -57,9 +54,7 @@ class Film(db.Model):
           film_to_update.summary = self.summary
           film_to_update.director = self.director
           film_to_update.genre = self.genre
-          film_to_update.rating = self.rating
           film_to_update.film_runtime = self.film_runtime
-          film_to_update.meta_score = self.meta_score
           try:
               db.session.commit()
               return True, self.id
@@ -91,7 +86,5 @@ class Film(db.Model):
         'summary': film.summary,
         'director': film.director,
         'genre': film.genre,
-        'rating': film.rating,
-        'film_runtime': film.film_runtime,
-        'meta_score': film.film_runtime
+        'film_runtime': film.film_runtime
         }

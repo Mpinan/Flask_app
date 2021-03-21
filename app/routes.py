@@ -37,9 +37,7 @@ def submit_film():
         incoming["summary"],
         incoming["director"],
         incoming["genre"],
-        incoming["rating"],
-        incoming["film_runtime"],
-        incoming["meta_score"]
+        incoming["film_runtime"]
         ))
 
     if not success:
@@ -67,9 +65,7 @@ def edit_film(film_id):
         incoming["summary"],
         incoming["director"],
         incoming["genre"],
-        incoming["rating"],
-        incoming["film_runtime"],
-        incoming["meta_score"]
+        incoming["film_runtime"]
         ))
 
     if not success:
