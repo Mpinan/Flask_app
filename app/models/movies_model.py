@@ -66,6 +66,7 @@ class Film(db.Model):
     
     @staticmethod
     def get_all_films():
+      # db.session.drop_all
       return Film.query.all()
     
     @staticmethod

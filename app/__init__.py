@@ -20,6 +20,7 @@ migrate = Migrate(app, db)
 
 
 
+
 from app import models, routes
 
 
