@@ -9,7 +9,7 @@ class Film(db.Model):
     film_name = db.Column(db.String(128), nullable=False)
     img_url = db.Column(db.Text, nullable=False)
     release_year = db.Column(db.Integer)
-    summary = db.Column(db.String(128))
+    summary = db.Column(db.String(255))
     director = db.Column(db.String(128))
     genre = db.Column(db.String(128))
     rating = db.Column(db.String(128))
