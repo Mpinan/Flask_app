@@ -12,7 +12,6 @@ class Film(db.Model):
     summary = db.Column(db.String(255))
     director = db.Column(db.String(128))
     genre = db.Column(db.String(128))
-    rating = db.Column(db.String(128))
     film_runtime = db.Column(db.Integer)
 
     def __init__(self, film_name, img_url, release_year, summary, director, genre, film_runtime):
